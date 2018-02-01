@@ -1,0 +1,12 @@
+Source: cutepeaks
+Maintainer: Sacha Schutz <sacha@labsquare.org>
+Build-Depends: debhelper (>= 9.0.0), libkf5archive-dev(>= 5.31.0), qt5-default(>= 5.7.0), libqt5svg5-dev(>= 5.7.0)
+Standards-Version: 3.9.8
+Section: utils
+
+Package: cutepeaks
+Priority: extra
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libkf5archive5(>= 5.31.0), libqt5svg5(>= 5.7.0), libqt5widgets5(>= 5.7.0), libqt5gui5(>= 5.7.0), libqt5core5a(>= 5.7.0)
+Description: CutePeaks package
+ A simple viewer for Sanger trace file made with Qt5. Supports AB1 and SCF 3.0 file formats.

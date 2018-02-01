@@ -1,0 +1,56 @@
+#!/usr/bin/make -f
+
+cutepeaks              = $(CURDIR)/src/cutepeaks
+cutepeaks_desktop      = $(CURDIR)/cutepeaks.desktop
+cutepeaks_icon         = $(CURDIR)/cutepeaks.svg
+
+CUTEPEAKS_DEST         = $(CURDIR)/debian/cutepeaks/usr/bin
+CUTEPEAKS_DESKTOP_DEST = $(CURDIR)/debian/cutepeaks/usr/share/applications
+CUTEPEAKS_ICON_DEST    = $(CURDIR)/debian/cutepeaks/usr/share/icons/hicolor/scalable/apps
+
+$(cutepeaks):
+	qmake cutepeaks.pro -o Makefile
+	make -f Makefile
+
+build-arch: build
+
+build-indep: build
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+install: build $(cutepeaks)
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	mkdir -m 755 -p $(CUTEPEAKS_DEST)
+	install -m 755 $(cutepeaks) $(CUTEPEAKS_DEST)
+	mkdir -m 755 -p $(CUTEPEAKS_DESKTOP_DEST)
+	install -m 644 $(cutepeaks_desktop) $(CUTEPEAKS_DESKTOP_DEST)
+	mkdir -m 755 -p $(CUTEPEAKS_ICON_DEST)
+	install -m 644 $(cutepeaks_icon) $(CUTEPEAKS_ICON_DEST)
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
